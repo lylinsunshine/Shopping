@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">Order Info</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="callout callout-danger">
+        <h5>Be Careful!</h5>
+        <p>When you confirm payment or cancel order, this action cannot be undone</p>
+    </div>
+    <ng-container *ngIf="orderInfomation">
+        <div>
+            <h3>Order Info</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span>Date</span>: {{selectedOrder.date}}</li>
+                <li class="list-group-item"><span>Payment method</span>: {{selectedOrder.paymentMethod}}</li>
+                <li class="list-group-item"><span>Payment status</span>: {{selectedOrder.paymentStatus}}</li>
+                <li class="list-group-item"><span>Name</span>: {{selectedOrder.name}}</li>
+                <li class="list-group-item"><span>Phone number</span>: {{selectedOrder.phoneNumber}}</li>
+                <li class="list-group-item"><span>Address</span>: {{selectedOrder.address}}</li>
+                <li class="list-group-item"><span>Delivery status</span>: {{selectedOrder.deliveryStatus}}</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Order Detail</h3>
+            <table class="table projects">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Attribute</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of orderInfomation; index as index">
+                        <tr>
+                            <td>{{index+1}}</td>
+                            <td>
+                                <img class="mr-2" style="height: 100px; width: 100px;" [src]="url + item.clientProductInfo.image">
+                                {{item.clientProductInfo.name}}
+                            </td>
+                            <td>
+                                <ng-container *ngIf="item.attribute!=null">
+                                    {{item.attribute}}
+                                </ng-container>
+                            </td>
+                            <td>
+                                {{item.price | number}}
+                            </td>
+                            <td>
+                                {{item.quantity}}
+                            </td>
+                            <td>
+                                {{item.subPrice | number}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <div>
+                <h5>Total: {{selectedOrder.totalPrice | number}}</h5>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Cancel</button>
+    <button type="button" class="btn btn-danger" [disabled]="(selectedOrder.paymentStatus=='SUCCESS' || selectedOrder.paymentStatus=='FAIL')" (click)="cancelOrder(selectedOrder.id)">Cancel Order</button>
+    <button type="button" class="btn btn-danger" [disabled]="selectedOrder.paymentStatus!='PENDING'" (click)="confirmPayment(selectedOrder.id)">Confirm Payment</button>
+</div>

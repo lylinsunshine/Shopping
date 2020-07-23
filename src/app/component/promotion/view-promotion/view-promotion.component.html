@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <h4 class="modal-title">Promotion Info</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <ng-container *ngIf="promotion">
+        <div>
+            <h3>Primary Info</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span>Name</span>: {{promotion.name}}</li>
+                <li class="list-group-item"><span>Start Date</span>: {{promotion.startDate}}</li>
+                <li class="list-group-item"><span>End Date</span>: {{promotion.endDate}}</li>
+                <li class="list-group-item"><span>Discount</span>: {{promotion.discountNumber ? promotion.discountNumber+'d': promotion.discountPercent+"%"}}</li>
+                <li class="list-group-item"><span>Type</span>: {{promotion.type}}</li>
+                <li class="list-group-item"><span>Apply for</span>: {{typeName}}</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Product</h3>
+            <table class="table projects">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Original Price</th>
+                        <th scope="col">New Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of products; index as index">
+                        <tr>
+                            <td>{{index+1}}</td>
+                            <td>
+                                <ng-container *ngIf="item.image; else noImage">
+                                    <img class="mr-2" style="height: 100px; width: 100px;" [src]="url + item.image">
+                                </ng-container>
+                                <ng-template #noImage>
+                                <img class="mr-2" style="height: 100px; width: 100px;" src="assets/no_image.jpg">
+                            </ng-template>
+                                {{item.name}}
+                            </td>
+                            <td>
+                                {{item.price | number}}
+                            </td>
+                            <td>
+                                <ng-container *ngIf="promotion.discountNumber">
+                                    {{item.price - promotion.discountNumber |number}}
+                                </ng-container>
+                                <ng-container *ngIf="promotion.discountPercent">
+                                    {{item.price - (item.price * promotion.discountPercent/100) |number}}
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cancel</button>
+    <!-- <button type="button" class="btn btn-danger" [disabled]="(selectedOrder.paymentStatus=='SUCCESS' || selectedOrder.paymentStatus=='FAIL')" (click)="cancelOrder(selectedOrder.id)">Cancel Order</button>
+    <button type="button" class="btn btn-danger" [disabled]="selectedOrder.paymentStatus!='PENDING'" (click)="confirmPayment(selectedOrder.id)">Confirm Payment</button> -->
+</div>

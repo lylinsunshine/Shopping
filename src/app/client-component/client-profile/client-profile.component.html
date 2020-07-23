@@ -1,0 +1,230 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Product Details Page</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="single-product.html">Profile</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+<!--================Checkout Area =================-->
+<ng-container *ngIf="userInfo">
+    <section class="checkout_area section_gap">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row">
+                    <ng-container *ngIf="isInfoEditable; else displayInfoForm">
+                        <div class="col-lg-12">
+                            <h3>Your Information</h3>
+                            <div class="row contact_form" action="#" method="post" novalidate="novalidate">
+                                <div class="col-md-12 form-group p_star">
+                                    <span>Username:</span>
+                                    <span>{{userInfo.username}}</span>
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <span>Name</span>
+                                    <span>{{userInfo.name}}</span>
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <span>Phone number</span>
+                                    <span>{{userInfo.phoneNumer}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #displayInfoForm>
+                        <div class="col-lg-12">
+                            <h3>Your Information</h3>
+                            <form class="row contact_form" [formGroup]="infoForm">
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Username</Span>
+                                    <input type="text" class="form-control" formControlName="username" disabled>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Password</Span>
+                                    <input type="password" class="form-control" formControlName="password">
+                                    <ng-container
+                                        *ngIf="infoForm.errors?.notSame && (infoForm.touched || infoForm.dirty)">
+                                        <small class="text-danger">
+                                            Password not match
+                                        </small>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="infoForm.controls.password.invalid && (infoForm.controls.password.dirty || infoForm.controls.password.touched)">
+                                        <br><small class="text-danger"
+                                            *ngIf="infoForm.controls.password.errors.minlength">
+                                            Password at least 6 character
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Repassword</Span>
+                                    <input type="password" class="form-control" formControlName="repassword">
+                                    <ng-container
+                                        *ngIf="infoForm.errors?.notSame && (infoForm.touched || infoForm.dirty)">
+                                        <small class="text-danger">
+                                            Password not match
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Name</Span>
+                                    <input type="text" class="form-control" formControlName="name">
+                                    <ng-container
+                                        *ngIf="infoForm.controls.name.invalid && (infoForm.controls.name.dirty || infoForm.controls.name.touched)">
+                                        <small class="text-danger" *ngIf="infoForm.controls.name.errors.required">
+                                            Name required
+                                        </small>
+                                        <small class="text-danger" *ngIf="infoForm.controls.name.errors.pattern">
+                                            Use your name in English please
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Phone number</Span>
+                                    <input type="text" class="form-control" formControlName="phoneNumber">
+                                    <ng-container
+                                        *ngIf="infoForm.controls.phoneNumber.invalid && (infoForm.controls.phoneNumber.dirty || infoForm.controls.phoneNumber.touched)">
+                                        <small class="text-danger"
+                                            *ngIf="infoForm.controls.phoneNumber.errors.required">
+                                            Phone number required
+                                        </small>
+                                        <small class="text-danger" *ngIf="infoForm.controls.phoneNumber.errors.pattern">
+                                            Use your phone number please
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <ng-container>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="updateInfoSuccess == true">
+                                        <span class="text-success mr-2">Updated Successfully</span><br>
+                                    </ng-container>
+
+                                    <a class="genric-btn e-large" [ngClass]="!infoForm.valid ? 'disable' : 'info'"
+                                        href="javascript:void(0);" (click)="submitInfoForm()">
+                                        <div class="spinner-border spinner-border-sm" role="status"
+                                            *ngIf="loadingUpdateInfo == true">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        Update Info
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </ng-template>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 style="margin-bottom: 10px !important;">Your Delivery Address</h3>
+                        <ng-container *ngIf="isAddressEditable; else displayTable">
+                            <form class="row contact_form" [formGroup]="addressForm">
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Name <small class="text-danger">*</small></Span>
+                                    <input type="text" class="form-control" formControlName="name">
+                                    <ng-container
+                                        *ngIf="addressForm.controls.name.invalid && (addressForm.controls.name.dirty || addressForm.controls.name.touched)">
+                                        <small class="text-danger" *ngIf="addressForm.controls.name.errors.required">
+                                            Name required
+                                        </small>
+                                        <small class="text-danger" *ngIf="addressForm.controls.name.errors.pattern">
+                                            Use name in English please
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Phone number <small class="text-danger">*</small></Span>
+                                    <input type="text" class="form-control" formControlName="phoneNumber">
+                                    <ng-container
+                                        *ngIf="addressForm.controls.phoneNumber.invalid && (addressForm.controls.phoneNumber.dirty || addressForm.controls.phoneNumber.touched)">
+                                        <small class="text-danger"
+                                            *ngIf="addressForm.controls.phoneNumber.errors.required">
+                                            Phone number required
+                                        </small>
+                                        <small class="text-danger"
+                                            *ngIf="addressForm.controls.phoneNumber.errors.pattern">
+                                            Use your phone number please
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Province/City</Span>
+                                    <input type="text" class="form-control" formControlName="province">
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>District/Ward</Span>
+                                    <input type="text" class="form-control" formControlName="district">
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <Span>Address <small class="text-danger">*</small></Span>
+                                    <input type="text" class="form-control" formControlName="address">
+                                    <ng-container
+                                        *ngIf="addressForm.controls.address.invalid && (addressForm.controls.address.dirty || addressForm.controls.address.touched)">
+                                        <small class="text-danger" *ngIf="addressForm.controls.address.errors.required">
+                                            Address required
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="col-md-8 form-group p_star">
+                                    <a class="genric-btn e-large mr-2"
+                                        [ngClass]="!addressForm.valid ? 'disable' : 'info'" href="javascript:void(0);"
+                                        (click)="submitAddressForm()">
+                                        <div class="spinner-border spinner-border-sm" role="status"
+                                            *ngIf="loadingUpdateAddress == true">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        Update Info</a>
+                                    <a class="genric-btn warning e-large" href="javascript:void(0);"
+                                        (click)="isAddressEditable=false">Cancel</a>
+                                </div>
+                            </form>
+                        </ng-container>
+                        <ng-template #displayTable>
+                            <a class="genric-btn default radius" href="javascript:void(0);" (click)="editAddress(0)">Add
+                                new address</a>
+                            <ul class="list">
+                                <div class="progress-table">
+                                    <div class="table-head">
+                                        <div class="serial" style="width: 10% !important;">#</div>
+                                        <div class="percentage" style="width: 25% !important;">Name</div>
+                                        <div class="percentage" style="width: 20% !important;">Phone number</div>
+                                        <div class="percentage" style="width: 20% !important;">Address</div>
+                                        <div class="percentage" style="width: 25% !important;">Action</div>
+                                    </div>
+                                    <ng-container *ngFor="let item of addressList; index as index">
+                                        <div class="table-row">
+                                            <div class="serial" style="width: 10% !important;">{{index+1}}</div>
+                                            <div class="percentage" style="width: 25% !important;">{{item.name}}
+                                            </div>
+                                            <div class="percentage" style="width: 20% !important;">{{item.phoneNumber}}
+                                            </div>
+                                            <div class="percentage" style="width: 20% !important;">
+                                                {{item.fullAddress}}
+                                            </div>
+                                            <div class="percentage" style="width: 25% !important;">
+                                                <a class="genric-btn warning-border medium mr-1"
+                                                    href="javascript:void(0);" (click)="editAddress(item.id)">Edit</a>
+                                                <a class="genric-btn danger-border medium" href="javascript:void(0);"
+                                                    (click)="deleteAddress(item.id)">Delete</a>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ul>
+                        </ng-template>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</ng-container>
+<!--================End Checkout Area =================-->

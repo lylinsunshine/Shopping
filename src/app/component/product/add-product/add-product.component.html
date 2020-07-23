@@ -1,0 +1,109 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Add Product</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink='/' routerLinkActive="active">Home</a></li>
+          <li class="breadcrumb-item active"><a routerLink='/products' routerLinkActive="active">Product</a>
+          </li>
+          <li class="breadcrumb-item active">Add</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Fill in</h3>
+    </div>
+    <!-- Form Value: {{ productForm.value | json }} -->
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="card-body">
+        <div class="form-group">
+          <label>Name *</label>
+          <input type="text" formControlName="name" required class="form-control">
+          <ng-container
+            *ngIf="productForm.controls.name.invalid && (productForm.controls.name.dirty || productForm.controls.name.touched)">
+            <small class="text-danger" *ngIf="productForm.controls.name.errors.required">
+              Name required
+            </small>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <label>Price *</label>
+          <input type="text" formControlName="price" required class="form-control">
+          <ng-container
+            *ngIf="productForm.controls.price.invalid && (productForm.controls.price.dirty || productForm.controls.price.touched)">
+            <small class="text-danger" *ngIf="productForm.controls.price.errors.required">
+              Price required
+            </small>
+            <small class="text-danger" *ngIf="productForm.controls.price.errors.pattern">
+              Check number
+            </small>
+          </ng-container>
+        </div>
+        <div class="form-group">
+          <label>Short Description</label>
+          <textarea type="text" formControlName="shortDescription" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Full Description</label>
+          <!-- <textarea type="text" formControlName="description" class="form-control" rows="4"></textarea> -->
+          <editor formControlName="fullDescription" [init]="{
+            height: 200,
+            menubar: false,          
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar:
+              'undo redo | formatselect | fontselect fontsizeselect | bold italic backcolor | \
+              alignleft aligncenter alignright alignjustify | link image | \
+              bullist numlist outdent indent | removeformat | help'
+          }"></editor>
+        </div>
+        <div class="form-group" formGroupName="manufacturerEntity">
+          <label>Manufacturer *</label>
+          <select formControlName="id" required class="form-control">
+            <option value="" hidden>Select manufacturer</option>
+            <option *ngFor="let manufacturer of manufacturers" value={{manufacturer.id}}>
+              {{manufacturer.name}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group" formGroupName="categoryEntity">
+          <label>Category *</label>
+          <select formControlName="id" required class="form-control">
+            <option value="" disabled>Select category</option>
+            <option *ngFor="let category of categories" value={{category.id}}>
+              {{category.name}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Image</label>
+          <input #file type="file" (change)="onFileSelect($event)" class="form-control-file">
+        </div>
+        <ng-container *ngIf="imgURL">
+          <div class="form-group">
+            <label>Preview</label><br />
+            <img [src]="imgURL" height="200">
+            <button class="btn btn-warning" (click)="deleteImage(); file.value=''">Delete Image</button>
+          </div>
+        </ng-container>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary float-right" [disabled]="!productForm.valid">Add</button>
+      </div>
+    </form>
+  </div>
+</section>
+<!-- /.content -->

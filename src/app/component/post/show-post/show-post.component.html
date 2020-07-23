@@ -1,0 +1,140 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Blog</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+            <li class="breadcrumb-item active">Blog</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">Search Bar</h5>
+        <div class="card-tools">
+          <button class="btn btn-tool" type="button" (click)="showSearchBar = !showSearchBar">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+        <ng-container *ngIf="showSearchBar == true">
+          <div class="card-body">
+            <!-- <p>
+        Form Value: {{ productForm.value | json }}
+      </p> -->
+            <form [formGroup]="postForm" (ngSubmit)="onSubmit(postForm.value)">
+              <div class="form-row mb-2">
+                <div class="col-12">
+                  <label>Name</label>
+                  <input type="text" formControlName="name" class="form-control">
+                </div>
+              </div>
+              <div class="card-footer mt-2 d-flex justify-content-center">
+  
+                <button type="submit" class="btn btn-lg btn-success mr-2" [disabled]="!postForm.valid"><i
+                    class="fas fa-search"></i> Search</button>
+                <button class="btn btn-lg btn-info" (click)="resetForm()"><i class="fas fa-brush"></i> Clear all
+                  field</button>
+              </div>
+            </form>
+          </div>
+        </ng-container>
+  
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="card-title">
+            <span class="d-flex justify-content-center align-items-center">
+              <label class="mr-2">Entries</label>
+              <select class="form-control" (change)="onChange($event.target.value)">
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+              </select>
+            </span>
+          </h3>
+          <div class="card-tools">
+            <a class="btn btn-primary btn-sm" routerLink='/admin/blogs/add' routerLinkActive="active">Add</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <ng-container *ngIf="blogs">
+          <!-- https://material.angular.io/components/table/examples -->
+          <table cdk-table [dataSource]="blogs" class="table table-hover projects">
+  
+            <!-- Id Column -->
+            <ng-container cdkColumnDef="id" style="width: 16.6666666667%">
+              <th cdk-header-cell *cdkHeaderCellDef> Id </th>
+              <td cdk-cell *matCellDef="let blogs"> {{blogs.id}} </td>
+            </ng-container>
+
+            <ng-container cdkColumnDef="title">
+                <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Title </th>
+                <td cdk-cell *cdkCellDef="let blogs"> {{blogs.title}} </td>
+              </ng-container>
+
+            <ng-container cdkColumnDef="image">
+              <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Image </th>
+              <td cdk-cell *matCellDef="let blogs">
+                <ng-container *ngIf="blogs.image; else noImage">
+                <img style="width: 50px; height: 50px;" [src]="url+blogs.image" alt="">
+              </ng-container>
+              <ng-template #noImage>
+                <img style="width: 50px; height: 50px;" src="assets/no_image.jpg" alt="">
+              </ng-template>
+              </td>
+
+            </ng-container>
+  
+            <!-- Name Column -->
+            <ng-container cdkColumnDef="dateCreate">
+              <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Date </th>
+              <td cdk-cell *cdkCellDef="let blogs"> {{blogs.dateCreated}} </td>
+            </ng-container>
+  
+            <!-- Des Column -->
+            <ng-container cdkColumnDef="overview">
+              <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Overview </th>
+              <td cdk-cell *cdkCellDef="let blogs"> {{blogs.overview}} </td>
+            </ng-container>
+  
+            <!-- Action Column -->
+            <ng-container cdkColumnDef="action">
+              <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Action </th>
+              <td cdk-cell *cdkCellDef="let blogs">
+                <a [routerLink]="['edit', blogs.id]" class="btn btn-info btn-sm">
+                  <i class="fas fa-pencil-alt">
+                  </i>
+                  Edit
+                </a>
+                <!-- <a class="btn btn-danger btn-sm" href="javascript:void(0);" (click)="delete(blogs.id)">
+                  <i class="fas fa-trash">
+                  </i>
+                  Delete
+                </a> -->
+              </td>
+            </ng-container>
+  
+            <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+            <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay;"></tr>
+          </table>
+        </ng-container>
+        <!-- <app-paginator [currentPage]="currentPage" [totalPage]="totalPage" (pageChanged)="onPageChanged($event)"></app-paginator> -->
+        <ngb-pagination [(page)]="currentPageDisplay" [pageSize]="entries" [maxSize]="3" [rotate]="true"
+          [boundaryLinks]="true" [collectionSize]="collectionSize" (pageChange)="onPageChanged($event)"></ngb-pagination>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->

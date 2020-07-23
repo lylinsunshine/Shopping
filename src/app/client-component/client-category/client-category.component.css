@@ -1,0 +1,80 @@
+/* .collapse, .collapse.show {
+    display: block;
+    transition: all 1s linear;
+  }
+  
+  .collapse {
+    opacity: 0;
+    height: 0;
+  }
+  
+  .collapse.show {
+    opacity: 1;
+  } */
+
+  
+  ngb-pagination ::ng-deep .page-item a.active .page-link {
+    background-color: lightgrey;
+    width: 40px;
+      line-height: 25px;
+      text-align: center;
+      display: inline-block;
+      background: #fff;
+      /* color: #ffba00; */
+      /* background: transparent; */
+  }
+  ngb-pagination ::ng-deep .page-item.active .page-link {
+    background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    color: #fff !important;
+  }
+
+  
+  ngb-pagination ::ng-deep .page-item.active .page-link:focus, .page-link:not(:disabled):not(.disabled):active:focus {
+    background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    color: #fff !important;
+  }
+  
+  ngb-pagination ::ng-deep .page-link:not(:disabled):not(.disabled):active:focus {
+    background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+    color: #fff !important;
+  }
+
+  .category-clicked {
+    color: #ffba00 !important;
+  }
+
+  /* .pagination {
+    margin-top: 10px;
+    border-left: 1px solid #eee;
+    border-radius: 0px; }
+    .pagination a {
+      width: 40px;
+      line-height: 40px;
+      text-align: center;
+      display: inline-block;
+      background: #fff; }
+      .pagination a.active {
+        color: #fff; }
+      .pagination a:hover {
+        color: #fff; }
+    .pagination .dot-dot {
+      width: auto;
+      background: transparent;
+      border-top: 0px;
+      border-bottom: 0px;
+      color: #cccccc;
+      padding: 0 5px; }
+      .pagination .dot-dot:hover {
+        background: transparent;
+        border: 0px;
+        border-right: 1px solid #eee;
+        color: #cccccc; } */

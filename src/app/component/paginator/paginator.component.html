@@ -1,0 +1,27 @@
+<ul class="pagination mt-4 float-right">
+    <li class="page-item" [ngClass]="{disabled:currentPage === 0}">
+        <a class="page-link" href="javascript:void()" (click)="selectPage(0); currentPage=0">
+            First
+        </a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled:currentPage === 0}">
+        <a class="page-link" href="javascript:void()" (click)="selectPage(currentPage-1)">
+            Previous
+        </a>
+    </li>
+    <ng-container *ngFor="let number of pageNumberList">
+        <li [ngClass]="currentPage===number-1 ? 'active': ''" class="page-item">
+            <a class="page-link" href="javascript:void()" (click)="selectPage(number-1)">{{number}}</a>
+        </li>
+    </ng-container>
+    <li class="page-item" [ngClass]="{disabled:currentPage === totalPage-1}">
+        <a class="page-link" href="javascript:void()" (click)="selectPage(currentPage+1)">
+            Next
+        </a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled:currentPage === totalPage-1}">
+        <a class="page-link" href="javascript:void()" (click)="selectPage(totalPage-1)">
+            Last
+        </a>
+    </li>
+</ul>

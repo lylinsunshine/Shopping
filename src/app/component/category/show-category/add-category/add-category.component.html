@@ -1,0 +1,88 @@
+<div class="modal-header">
+    <h4 class="modal-title">Order Info</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="callout callout-danger">
+        <h5>Be Careful!</h5>
+        <p>When you change infomation, client will see everything</p>
+    </div>
+    <ng-container *ngIf="isHaveChild!=0">
+    <div class="callout callout-danger">
+      <h5>Already have child!</h5>
+      <p>You cant select parent for this category</p>
+  </div>
+</ng-container>
+<ng-container *ngIf="categories">
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label>Name *</label>
+                <input type="text" formControlName="name" required class="form-control">
+                <ng-container
+                    *ngIf="categoryForm.controls.name.invalid && (categoryForm.controls.name.dirty || categoryForm.controls.name.touched)">
+                    <small class="text-danger" *ngIf="categoryForm.controls.name.errors.required">
+                        Name required
+                    </small>
+                </ng-container>
+                <ng-container *ngIf="(categoryForm.controls.name.dirty || categoryForm.controls.name.touched)">
+                    <ng-container *ngIf="categoryForm.controls.name.status === 'PENDING'">
+                      <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="categoryForm.controls.name.errors?.nameExist">
+                      <span class="text-danger">Name Exist</span>
+                    </ng-container>
+                  </ng-container>
+            </div>
+            <div class="form-group">
+                <label>Description </label>
+                <input type="text" formControlName="description" class="form-control">
+            </div>
+            <ng-container *ngIf="isHaveChild==0">
+            <div class="form-group" formGroupName="parent">
+                <label>Categories *</label>
+                <select formControlName="id" class="form-control" (change)="checkIsParent($event)">
+                    <option value="">None</option>
+                    <ng-container *ngFor="let category of categories">
+                    <option value="{{category.id}}">
+                        {{category.name}}
+                    </option>
+                </ng-container>
+                </select>
+            </div>
+            <ng-container *ngIf="isParent">
+                <div class="form-group">
+                    <label>Url </label>
+                    <input type="text" formControlName="url" class="form-control">
+                    <ng-container
+                    *ngIf="categoryForm.controls.url.invalid && (categoryForm.controls.url.dirty || categoryForm.controls.url.touched)">
+                    <small class="text-danger" *ngIf="categoryForm.controls.url.errors.required">
+                      Url required
+                    </small>
+                    <small class="text-danger" *ngIf="categoryForm.controls.url.errors.pattern">
+                      Url have -, text, number
+                    </small>
+                  </ng-container>
+                <ng-container *ngIf="(categoryForm.controls.url.dirty || categoryForm.controls.url.touched)">
+                    <ng-container *ngIf="categoryForm.controls.url.status === 'PENDING'">
+                      <div class="spinner-border spinner-border-sm" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="categoryForm.controls.url.errors?.urlExist">
+                      <span class="text-danger">Url Exist</span>
+                    </ng-container>
+                  </ng-container>
+                </div>
+            </ng-container>
+            </ng-container>
+        </form>
+</ng-container>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!categoryForm.valid" (click)="(isUpdate ? updateCategory() : addCategory())">{{isUpdate ? 'Update Info': 'Add Category'}}</button>
+</div>

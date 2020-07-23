@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Toast */
+/* @import '~ngx-toastr/toastr.css'; */
+@import "assets/css/toastr-bs4-alert.css";
+
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=swap');
+@import "assets/css/adminlte.min.css";
+@import "assets/plugins/fontawesome-free/css/all.min.css";
+@import "assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
+
+@import "assets/client-assets/linearicons.css";
+@import "assets/client-assets/themify-icons.css";
+/* @import "assets/client-assets/owl.carousel.css"; */
+@import "assets/client-assets/nice-select.css";
+@import "~nouislider/distribute/nouislider.min.css";
+@import "assets/client-assets/ion.rangeSlider.css";
+/* @import "assets/client-assets/ion.rangeSlider.skinFlat.css"; */
+@import "assets/client-assets/magnific-popup.css";
+@import "assets/client-assets/main.css";
+
+@import '~ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.css';
+@import '~ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.css';
+
+@import '~ngx-bar-rating/themes/br-fontawesome-theme';
+@import '~ngx-bar-rating/themes/br-default-theme' ;
+@import '~ngx-bar-rating/themes/br-fontawesome-o-theme';
+
+.content-wrapper .content {
+    padding: 0 .5rem;
+}
+
+.card-header {
+    text-align: center;
+}
+
+
+

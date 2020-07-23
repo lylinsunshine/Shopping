@@ -1,0 +1,283 @@
+<ng-container *ngIf="product">
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Product Details Page</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+						<a href="single-product.html">{{product.name}}</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Single Product Area =================-->
+	<div class="product_image_area">
+		<div class="container">
+			<div class="row s_product_inner">
+				<div class="col-lg-6">
+					<div>
+						<ng-container *ngIf="sortImageArray().length!=0">
+						<owl-carousel-o [options]="customOptions" class="s_Product_carousel">
+							<ng-container *ngFor="let image of sortImageArray()">
+								<ng-template carouselSlide>
+									<div class="single-prd-item">
+										<img class="img-fluid" [src]="url+image.image" alt="">
+									</div>
+								</ng-template>
+							</ng-container>
+						</owl-carousel-o>
+					</ng-container>
+					<ng-container *ngIf="sortImageArray().length==0">
+						<ng-container *ngIf="product.image==null||product.image==''; else haveImage">
+						<owl-carousel-o [options]="customOptions" class="s_Product_carousel">
+								<ng-template carouselSlide>
+									<div class="single-prd-item">
+										<img class="img-fluid" src="assets/no_image.jpg" alt="">
+									</div>
+								</ng-template>
+						</owl-carousel-o>
+					</ng-container>
+					<ng-template #haveImage>
+						<owl-carousel-o [options]="customOptions" class="s_Product_carousel">
+								<ng-template carouselSlide>
+									<div class="single-prd-item">
+										<img class="img-fluid" [src]="url+product.image" alt="">
+									</div>
+								</ng-template>
+						</owl-carousel-o>
+					</ng-template>
+					</ng-container>
+					</div>
+
+				</div>
+				<div class="col-lg-5 offset-lg-1">
+					<div class="s_product_text">
+						<h3>{{product.name}}</h3>
+						<h2>{{totalPrice | number}}đ</h2>
+						<ng-container *ngIf='product.productAttributeSet'>
+							<ul class="list" *ngFor="let attribute of productAttributes | keyvalue">							
+								<li>
+									<ng-container *ngFor="let item of listAttributes">
+										<span *ngIf="item.id == attribute.key" class="mr-2">{{item.name}}</span>
+									</ng-container>
+									
+									<div class="default-select" id="default-select">
+										<select nice-select (change)="onChange($event)">
+											<option value='{{0+ attribute.key}}'>Default</option>
+											<ng-container *ngFor="let item of attribute.value">
+												<option value="{{item.id}}">{{item.value}}</option>
+											</ng-container>
+										</select>
+									</div>
+								</li>
+							</ul>
+						</ng-container>
+						<p>{{product.shortDescription}}</p>
+						<div class="product_count">
+							<label for="qty">Quantity:</label>
+							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+								class="input-text qty" value="{{quantity}}">
+							<button (click)="quantity = quantity+1" class="increase items-count" type="button"><i
+									class="lnr lnr-chevron-up"></i></button>
+							<button (click)="quantity==1? quantity: quantity = quantity-1" class="reduced items-count" type="button"><i
+									class="lnr lnr-chevron-down"></i></button>
+						</div>
+						<div class="card_area d-flex align-items-center">
+							<a class="primary-btn" href="javascript:void(0);" (click)="addToCart()">Add to Cart</a>
+							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Single Product Area =================-->
+
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav nav-tabs" id="myTab" role="tablist">
+				<li [ngbNavItem]="1" class="nav-item">
+					<a class="nav-link" ngbNavLink>Description</a>
+					<ng-template ngbNavContent>
+						<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+							{{product.fullDescription}}
+						</div>
+					</ng-template>
+				</li>
+				<li [ngbNavItem]="2" class="nav-item">
+					<a class="nav-link" ngbNavLink>Reviews</a>
+					<ng-template ngbNavContent>
+						<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+							
+							<div class="row">
+								<ng-container *ngIf="reviewList.length!=0; else noReview">
+								<div class="col-lg-6">
+									<div class="row total_rate">
+										<div class="col-12">
+											<div class="box_total">
+												<h5>Overall</h5>
+												<h4>{{product.rating}}</h4>
+												<h6>({{reviewList.length}} Reviews)</h6>
+											</div>
+										</div>
+									</div>
+									<div class="review_list">
+										
+											<ng-container *ngFor="let item of reviewList">
+										<div class="review_item">
+											<div class="media">
+												<div class="media-body">
+													<h4>{{item.userEntity.name}}</h4>
+													<ng-container *ngFor="let key of [].constructor(item.rating)">
+													<i class="fa fa-star"></i>
+												</ng-container>
+												</div>
+											</div>
+											<p>{{item.content}}</p>
+										</div>
+									</ng-container>
+									
+									</div>
+								</div>
+							</ng-container>
+							<ng-template #noReview>
+								<div class="col-lg-6">
+									<div class="row total_rate">
+										<div class="col-12">
+											<div class="box_total">
+												<h5>Overall</h5>
+												<h4>{{product.rating}}</h4>
+												<h6>({{reviewList.length}} Reviews)</h6>
+											</div>
+										</div>
+									</div>
+									<div class="review_list">									
+									</div>
+								</div>
+							</ng-template>
+								<div class="col-lg-6">
+									<ng-container *ngIf="username!=null; else noLogin">
+										<ng-container *ngIf="sendSubmit">
+									<form class="review_box" [formGroup]="reviewForm">
+										<!-- {{reviewForm.value | json}} -->
+										<h4>Add a Review</h4>
+										<p>Your Rating:</p>
+										<bar-rating formControlName="rating" [max]="5" [theme]="'default'" [showText]="true" [titles]="['Very Bad', 'Bad' , 'Average', 'Good', 'Very Good']"></bar-rating>
+										<!-- <form></form> -->
+										<div class="row contact_form" action="contact_process.php" method="post"
+											id="contactForm" novalidate="novalidate">
+											<div class="col-md-12">
+												<div class="form-group">
+													<textarea class="form-control" formControlName="content" id="message" rows="1"
+														placeholder="Review" onfocus="this.placeholder = ''"
+														onblur="this.placeholder = 'Review'"></textarea>
+												</div>
+											</div>
+											<div class="col-md-12 text-right">
+												<button type="submit" value="submit" class="primary-btn" (click)="onSubmit()">Submit
+													Now</button>
+											</div>
+										</div>
+									</form>
+								</ng-container>
+								<ng-container *ngIf="!sendSubmit">
+									<form class="review_box" [formGroup]="reviewForm">
+										<p>Your Rating:</p>
+										<bar-rating formControlName="rating" [max]="5" [theme]="'default'" [showText]="true" [titles]="['Very Bad', 'Bad' , 'Average', 'Good', 'Very Good']" disabled></bar-rating>
+										<!-- <form></form> -->
+										<div class="row contact_form" action="contact_process.php" method="post"
+											id="contactForm" novalidate="novalidate">
+											<div class="col-md-12">
+												<div class="form-group">
+													<textarea class="form-control" formControlName="content" id="message" rows="1"
+														placeholder="Review" onfocus="this.placeholder = ''"
+														onblur="this.placeholder = 'Review'" disabled></textarea>
+												</div>
+											</div>
+										</div>
+									</form>
+								</ng-container>
+								</ng-container>
+								<ng-template #noLogin>
+									<div class="col-md-12">
+										<a routerLink="/client/login" class="primary-btn">Please login to write review</a>
+									</div>
+								</ng-template>
+								</div>
+							</div>
+						
+						</div>
+					</ng-template>
+				</li>
+			</ul>
+			<div [ngbNavOutlet]="nav" class="tab-content" id="myTabContent">
+
+
+			</div>
+		</div>
+	</section>
+	<!--================End Product Description Area =================-->
+
+	<!-- Start related-product Area -->
+	<section class="related-product-area section_gap_bottom">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6 text-center">
+					<div class="section-title">
+						<h1>Relate Product</h1>
+						<p>Other product you should buy</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<ng-container *ngFor="let item of relatedProduct">
+				<div class="col-lg-4 col-md-6">
+						<div class="single-product">
+							<ng-container *ngIf="item.image; else noImage">
+								<a [routerLink]="['/client/product', item.url]"><img
+										style="width: 255px; height: 270px;" class="img-fluid"
+										[src]="url + item.image"></a>
+							</ng-container>
+							<ng-template #noImage>
+								<a [routerLink]="['/client/product', item.url]"><img
+										style="width: 255px; height: 270px;" class="img-fluid"
+										src="assets/no_image.jpg"></a>
+							</ng-template>
+							<div class="product-details">
+								<h6>{{item.name}}</h6>
+								<div class="price">
+									<h6>{{item.newPrice? item.newPrice: item.price }}đ</h6>
+									<ng-container *ngIf="item.newPrice">
+										<h6 class="l-through">{{item.price}}đ</h6>
+									</ng-container>
+								</div>
+								<div class="prd-bottom">
+
+									<a href="javascript:void(0)" class="social-info" (click)="addToCartRelated(item.id, item.name, item.image, item.price)">
+										<span class="ti-bag"></span>
+										<p class="hover-text">Add to cart</p>
+									</a>
+									<a href="" class="social-info">
+										<span class="lnr lnr-heart"></span>
+										<p class="hover-text">Wishlist</p>
+									</a>
+								</div>
+							</div>
+						</div>
+
+				</div>
+			</ng-container>
+				<!-- single product -->
+			</div>
+		</div>
+	</section>
+	<!-- End related-product Area -->
+
+</ng-container>

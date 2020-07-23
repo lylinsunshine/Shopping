@@ -1,0 +1,172 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			<div class="col-first">
+				<h1>Login/Register</h1>
+				<nav class="d-flex align-items-center">
+					<a routerLink="/admin/index">Home<span class="lnr lnr-arrow-right"></span></a>
+					<a href="javascript:void(0)">Login/Register</a>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section_gap">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="login_form_inner">
+					<h3>Register now</h3>
+					<form class="row login_form" [formGroup]="registerForm">
+						<div class="col-md-12 form-group">
+							<input type="text" formControlName="username" class="form-control" required
+								placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+							<ng-container
+								*ngIf="registerForm.controls.username.invalid && (registerForm.controls.username.dirty || registerForm.controls.username.touched)">
+								<small class="text-danger" *ngIf="registerForm.controls.username.errors.required">
+									Username required
+								</small>
+								<small class="text-danger" *ngIf="registerForm.controls.username.errors.email">
+									Use your email please
+								</small>
+							</ng-container>
+							<ng-container *ngIf="(registerForm.controls.username.dirty || registerForm.controls.username.touched)">
+								<ng-container *ngIf="registerForm.controls.username.status === 'PENDING'">
+								  <div class="spinner-border spinner-border-sm" role="status">
+									<span class="sr-only">Loading...</span>
+								  </div>
+								</ng-container>
+								<ng-container *ngIf="registerForm.controls.username.errors?.userNameExist">
+								  <span class="text-danger">Username Exist</span>
+								</ng-container>
+							  </ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" formControlName="password" class="form-control" required
+								placeholder="Password" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Password'">
+							<ng-container
+								*ngIf="registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)">
+								<small class="text-danger" *ngIf="registerForm.controls.password.errors.required">
+									Password required
+								</small>
+							</ng-container>
+							<ng-container
+								*ngIf="registerForm.errors?.notSame && (registerForm.touched || registerForm.dirty)">
+								<small class="text-danger">
+									Password not match
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" formControlName="repassword" class="form-control" required
+								placeholder="Repassword" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Repassword'">
+							<ng-container
+								*ngIf="registerForm.controls.repassword.invalid && (registerForm.controls.repassword.dirty || registerForm.controls.repassword.touched)">
+								<small class="text-danger" *ngIf="registerForm.controls.repassword.errors.required">
+									Password required
+								</small>
+							</ng-container>
+							<ng-container
+								*ngIf="registerForm.errors?.notSame && (registerForm.touched || registerForm.dirty)">
+								<small class="text-danger">
+									Password not match
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" formControlName="name" class="form-control" required placeholder="Name"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
+							<ng-container
+								*ngIf="registerForm.controls.name.invalid && (registerForm.controls.name.dirty || registerForm.controls.name.touched)">
+								<small class="text-danger" *ngIf="registerForm.controls.name.errors.required">
+									Name required
+								</small>
+								<small class="text-danger" *ngIf="registerForm.controls.name.errors.pattern">
+									Use your name in English please
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" formControlName="phoneNumber" class="form-control" required
+								placeholder="Phone number" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Phone number'">
+							<ng-container
+								*ngIf="registerForm.controls.phoneNumber.invalid && (registerForm.controls.phoneNumber.dirty || registerForm.controls.phoneNumber.touched)">
+								<small class="text-danger" *ngIf="registerForm.controls.phoneNumber.errors.required">
+									Phone number required
+								</small>
+								<small class="text-danger" *ngIf="registerForm.controls.phoneNumber.errors.pattern">
+									Use your phone number please
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<small class="text-primary" *ngIf="isRegisterSuccess!=''">
+								Register Success, please wait and login again
+							</small>
+							<button type="submit" value="submit"
+								[ngClass]="!registerForm.valid ? 'disabled-btn' : 'primary-btn'"
+								[disabled]="!registerForm.valid" (click)="register()">Create my account</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="login_form_inner">
+					<h3>Log in to enter</h3>
+					<form class="row login_form" [formGroup]="loginForm">
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" formControlName="username" required
+								placeholder="Username" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Username'">
+							<ng-container
+								*ngIf="loginForm.controls.username.invalid && (loginForm.controls.username.dirty || loginForm.controls.username.touched)">
+								<small class="text-danger" *ngIf="loginForm.controls.username.errors.required">
+									Username required
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<input type="password" class="form-control" formControlName="password" required
+								placeholder="Password" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Password'">
+							<ng-container
+								*ngIf="loginForm.controls.password.invalid && (loginForm.controls.password.dirty || loginForm.controls.password.touched)">
+								<small class="text-danger" *ngIf="loginForm.controls.password.errors.required">
+									Password required
+								</small>
+							</ng-container>
+						</div>
+						<div class="col-md-12 form-group">
+							<div class="creat_account">
+								<input type="checkbox" id="f-option2" name="selector" (change)="isRemberMeChecked = true">
+								<label for="f-option2">Keep me logged in</label>
+							</div>
+						</div>
+						<div class="col-md-12 form-group">
+							<button type="submit" value="submit"
+								[ngClass]="!loginForm.valid ? 'disabled-btn' : 'primary-btn'"
+								[disabled]="!loginForm.valid" (click)="login()">
+								<div class="spinner-border spinner-border-sm" role="status" *ngIf="loadingLogin == true">
+									<span class="sr-only">Loading...</span>
+								</div>
+								Log In
+							</button>
+							<small class="text-danger" *ngIf="isLoginFailed">
+								Username or Password is incorrect
+							</small>
+							<a href="#">Forgot Password?</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End Login Box Area =================-->

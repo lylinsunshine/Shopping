@@ -1,0 +1,142 @@
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Blog Page</h1>
+                    <nav class="d-flex align-items-center">
+                        <a routerLink="/client/blog">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="category.html">Blog</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Blog Categorie Area =================-->
+    <section class="blog_categorie_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="categories_post">
+                        <img src="assets/client-assets/img/blog/cat-post/cat-post-3.jpg" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <div>
+                                    <h5>Style</h5>
+                                </div>
+                                <div class="border_line"></div>
+                                <p>Best shop in the world</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="categories_post">
+                        <img src="assets/client-assets/img/blog/cat-post/cat-post-2.jpg" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <div>
+                                    <h5>Product</h5>
+                                </div>
+                                <div class="border_line"></div>
+                                <p>High quality</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="categories_post">
+                        <img src="assets/client-assets/img/blog/cat-post/cat-post-1.jpg" alt="post">
+                        <div class="categories_details">
+                            <div class="categories_text">
+                                <div>
+                                    <h5>Admin</h5>
+                                </div>
+                                <div class="border_line"></div>
+                                <p>Hard working</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Categorie Area =================-->
+
+    <!--================Blog Area =================-->
+    <section class="blog_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="blog_left_sidebar">
+                        <ng-container *ngFor="let item of blogs">
+                        <article class="row blog_item">
+                            <div class="col-md-3">
+                                <div class="blog_info text-right">
+                                    <ul class="blog_meta list">
+                                        <li><a href="#">Admin<i class="lnr lnr-user"></i></a></li>
+                                        <li><a href="#">{{item.dateCreated}}<i class="lnr lnr-calendar-full"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="blog_post">
+                                    <img style="height: 200px; width: 100%;" [src]="url + item.image" alt="">
+                                    <div class="blog_details">
+                                        <a routerLink="/client/blog-detail/{{item.id}}">
+                                            <h2>{{item.title}}</h2>
+                                        </a>
+                                        <p>{{item.overview}}</p>
+                                        <a routerLink="/client/blog-detail/{{item.id}}" class="white_bg_btn">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </ng-container>
+                        <!-- <nav class="blog-pagination justify-content-center d-flex">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a href="#" class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">
+                                            <span class="lnr lnr-chevron-left"></span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a href="#" class="page-link">01</a></li>
+                                <li class="page-item active"><a href="#" class="page-link">02</a></li>
+                                <li class="page-item"><a href="#" class="page-link">03</a></li>
+                                <li class="page-item"><a href="#" class="page-link">04</a></li>
+                                <li class="page-item"><a href="#" class="page-link">09</a></li>
+                                <li class="page-item">
+                                    <a href="#" class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">
+                                            <span class="lnr lnr-chevron-right"></span>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav> -->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        <aside class="single_sidebar_widget author_widget">
+                            <img class="author_img rounded-circle" style="width: 120px; height: 120px;" src="assets/avatar.jpg" alt="">
+                            <h4>Thang</h4>
+                            <p>Student, Dev</p>
+                            <p>Want to learn everything</p>
+                            <div class="br"></div>
+                        </aside>
+                        <aside class="single_sidebar_widget ads_widget">
+                            <a href="#"><img class="img-fluid" src="assets/client-assets/img/blog/add.jpg" alt=""></a>
+                            <div class="br"></div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================Blog Area =================-->

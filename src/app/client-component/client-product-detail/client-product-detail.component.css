@@ -1,0 +1,7 @@
+bar-rating::ng-deep div.br-text {
+    margin-top: 0.5rem;
+}
+
+bar-rating::ng-deep>div.br-default{
+    margin-top: 0px !important;
+}

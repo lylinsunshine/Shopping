@@ -1,0 +1,89 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Add Blog</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink='/admin/blogs' routerLinkActive="active">Blog</a>
+            </li>
+            <li class="breadcrumb-item active">Add</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Fill in</h3>
+      </div>
+      <!-- Form Value: {{ productForm.value | json }} -->
+      <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+        <div class="card-body">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" formControlName="title" required class="form-control">
+            <ng-container
+            *ngIf="postForm.controls.title.invalid && (postForm.controls.title.dirty || postForm.controls.title.touched)">
+            <small class="text-danger" *ngIf="postForm.controls.title.errors.required">
+               Title required
+            </small>
+          </ng-container>
+          </div>
+          <div class="form-group">
+            <label>Overview *</label>
+            <textarea type="text" formControlName="overview" class="form-control" rows="2"></textarea>
+            <ng-container
+            *ngIf="postForm.controls.overview.invalid && (postForm.controls.overview.dirty || postForm.controls.overview.touched)">
+            <small class="text-danger" *ngIf="postForm.controls.overview.errors.required">
+                Overview required
+            </small>
+          </ng-container>
+          </div>
+          <div class="form-group">
+            <label>Body *</label>
+            <editor formControlName="body" [init]="{
+              height: 200,
+              menubar: false,          
+              plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+              ],
+              toolbar:
+                'undo redo | formatselect | fontselect fontsizeselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | link image | \
+                bullist numlist outdent indent | removeformat | help'
+            }"></editor>
+            <ng-container
+            *ngIf="postForm.controls.body.invalid && (postForm.controls.body.dirty || postForm.controls.body.touched)">
+            <small class="text-danger" *ngIf="postForm.controls.body.errors.required">
+              Body required
+            </small>
+          </ng-container>
+          </div>
+          <div class="form-group">
+            <label>Image</label>
+            <input #file type="file" (change)="onFileSelect($event)" class="form-control-file">
+          </div>
+          <ng-container *ngIf="imgURL">
+            <div class="form-group">
+              <label>Preview</label><br />
+              <img [src]="imgURL" height="200">
+              <button class="btn btn-warning" (click)="deleteImage(); file.value=''">Delete Image</button>
+            </div>
+          </ng-container>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary float-right" [disabled]="!postForm.valid">Add</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  <!-- /.content -->

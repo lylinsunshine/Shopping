@@ -1,0 +1,130 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+                <nav class="d-flex align-items-center">
+                    <a routerLink="/client/index">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="javascript:void(0)">Cart</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <ng-container *ngIf="cart==null||cart.length==0; else cartNotEmpty">
+                <h1 style="text-align: center;">Cart empty</h1>
+                <a routerLink='/client/index'>
+                    <p style="text-align: center;">Back to index <span class="lnr lnr-arrow-right"></span></p>
+                </a>
+            </ng-container>
+            <ng-template #cartNotEmpty>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of cart; index as index">
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <ng-container *ngIf="item.image; else noImage">
+                                                    <img style="height: 130px; width: 130px;" [src]="url + item.image" alt="">
+                                                </ng-container>
+                                                <ng-template #noImage>
+                                                   <img style="height: 130px; width: 130px;" 
+                                                            src="assets/no_image.jpg">
+                                                </ng-template>
+                                            </div>
+                                            <div class="media-body">
+                                                <h3>{{item.name}}</h3>
+                                                <ng-container *ngIf="item.attribute.length!=0">
+                                                    <ng-container *ngFor="let attribute of item.attribute; last as isLast">
+                                                        <span>{{isLast ? attribute.value : attribute.value+ ' -'}}</span>
+                                                    </ng-container>
+                                                        
+                                                </ng-container>
+                                                <br><a href="javascript:void(0);"
+                                                    (click)="removeItemFromCart(index)"><small>Delete</small></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+
+                                        <h5>{{item.price | number}}</h5>
+
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <input type="text" name="qty" maxlength="12" value="1"
+                                                title="Quantity:" class="input-text qty" value="{{item.quantity}}" onkeydown="javascript: return event.keyCode === 8 ||
+                                                event.keyCode === 46 ? true : !isNaN(Number(event.key))">
+                                            <button (click)="updateCartQuantity(index, 1)" class="increase items-count" type="button"><i
+                                                    class="lnr lnr-chevron-up"></i></button>
+                                            <button (click)="updateCartQuantity(index, 0)" class="reduced items-count" type="button"><i
+                                                    class="lnr lnr-chevron-down"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>{{item.price * item.quantity | number}}</h5>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <h1>Total</h1>
+                                </td>
+                                <td>
+                                    <h1 style="color: red;">{{totalPrice}}</h1>
+                                </td>
+                            </tr>
+                            <tr class="out_button_area">
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <div class="checkout_btn_inner d-flex align-items-center flex-row-reverse">
+                                        <ng-container *ngIf="isLogin; else login">
+                                            <a class="primary-btn" routerLink='/client/checkout'>Proceed to checkout</a>
+                                        </ng-container>
+                                        <ng-template #login>
+                                            <a class="primary-btn" routerLink='/client/login'>Please Sign in before Checkout</a>
+                                        </ng-template>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->

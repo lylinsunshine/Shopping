@@ -1,0 +1,353 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Edit Product</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a routerLink='/' routerLinkActive="active">Home</a></li>
+          <li class="breadcrumb-item active"><a routerLink='/products' routerLinkActive="active">Product</a>
+          </li>
+          <li class="breadcrumb-item active">Edit</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Product Info</h3>
+          <div class="card-tools">
+            <button class="btn btn-tool" type="button" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Form Value: {{ productForm.value | json }} -->
+          <form [formGroup]="productInfoForm" (ngSubmit)="onSubmitInfo(productInfoForm.value)">
+            <div class="form-group">
+              <label>Name *</label>
+              <input type="text" formControlName="name" required class="form-control">
+              <ng-container
+                *ngIf="productInfoForm.controls.name.invalid && (productInfoForm.controls.name.dirty || productInfoForm.controls.name.touched)">
+                <small class="text-danger" *ngIf="productInfoForm.controls.name.errors.required">
+                  Name required
+                </small>
+              </ng-container>
+              <ng-container *ngIf="(productInfoForm.controls.name.dirty || productInfoForm.controls.name.touched)">
+                <ng-container *ngIf="productInfoForm.controls.name.status === 'PENDING'">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="productInfoForm.controls.name.errors?.nameExist">
+                  <span class="text-danger">Name Exist</span>
+                </ng-container>
+              </ng-container>
+            </div>
+            <div class="form-group">
+              <label>Price *</label>
+              <input type="text" formControlName="price" required class="form-control">
+              <ng-container
+                *ngIf="productInfoForm.controls.price.invalid && (productInfoForm.controls.price.dirty || productInfoForm.controls.price.touched)">
+                <small class="text-danger" *ngIf="productInfoForm.controls.price.errors.required">
+                  Price required
+                </small>
+                <small class="text-danger" *ngIf="productInfoForm.controls.price.errors.pattern">
+                  Check number
+                </small>
+              </ng-container>
+            </div>
+            <div class="form-group">
+              <label>SKU</label>
+              <input type="text" formControlName="sku" class="form-control">
+              <ng-container *ngIf="(productInfoForm.controls.sku.dirty || productInfoForm.controls.sku.touched)">
+                <ng-container *ngIf="productInfoForm.controls.sku.status === 'PENDING'">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="productInfoForm.controls.sku.errors?.skuExist">
+                  <span class="text-danger">Sku Exist</span>
+                </ng-container>
+              </ng-container>
+            </div>
+            <div class="form-group">
+              <label>Short Description</label>
+              <textarea type="text" formControlName="shortDescription" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Full Description</label>
+              <!-- <textarea type="text" formControlName="description" class="form-control" rows="4"></textarea> -->
+              <editor formControlName="fullDescription" [init]="{
+                height: 200,
+                menubar: false,          
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar:
+                  'undo redo | formatselect | fontselect fontsizeselect | bold italic backcolor | \
+                  alignleft aligncenter alignright alignjustify | link image | \
+                  bullist numlist outdent indent | removeformat | help'
+              }"></editor>
+            </div>
+            <div class="form-group" formGroupName="manufacturerEntity">
+              <label>Manufacturer *</label>
+              <select class="form-control" formControlName="id" (change)='onOptionsSelected($event)'>
+                <option *ngFor="let manufacturer of manufacturers" value={{manufacturer.id}}>{{manufacturer.name}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group" formGroupName="categoryEntity">
+              <label>Category *</label>
+              <select formControlName="id" required class="form-control">
+                <option *ngFor="let category of categories" value={{category.id}}>
+                  {{category.name}}
+                </option>
+              </select>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary float-right" [disabled]="!productInfoForm.valid">Update
+                Info</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Product SEO</h3>
+          <div class="card-tools">
+            <button class="btn btn-tool" type="button" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Form Value: {{ productForm.value | json }} -->
+          <form [formGroup]="productSeoForm" (ngSubmit)="onSubmitSeo(productSeoForm.value)">
+            <div class="form-group">
+              <label>Search engine page name</label>
+              <input type="text" formControlName="url" required class="form-control">
+              <ng-container
+                *ngIf="productSeoForm.controls.url.invalid && (productSeoForm.controls.url.dirty || productSeoForm.controls.url.touched)">
+                <small class="text-danger" *ngIf="productSeoForm.controls.url.errors.required">
+                  Url required
+                </small>
+                <small class="text-danger" *ngIf="productSeoForm.controls.url.errors?.invalidUrl">
+                  Url have -, text, number
+                </small>
+                <small class="text-danger" *ngIf="productSeoForm.controls.url.errors.pattern">
+                  Url have -, text, number
+                </small>
+              </ng-container>
+              <ng-container *ngIf="(productSeoForm.controls.url.dirty || productSeoForm.controls.url.touched)">
+                <ng-container *ngIf="productSeoForm.controls.url.status === 'PENDING'">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="productSeoForm.controls.url.errors?.urlExist">
+                  <span class="text-danger">Url Exist</span>
+                </ng-container>
+              </ng-container>
+            </div>
+            <div class="form-group">
+              <label>Meta title</label>
+              <input type="text" formControlName="metaTitle" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Meta keywords</label>
+              <input type="text" formControlName="metaKeyword" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label>Meta description</label>
+              <textarea type="text" formControlName="metaDescription" class="form-control" rows="4"></textarea>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary float-right" [disabled]="!productSeoForm.valid">Update
+                SEO</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Product Image</h3>
+          <div class="card-tools">
+            <button class="btn btn-tool" type="button" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Form Value: {{ productForm.value | json }} -->
+          <form [formGroup]="productImageForm" (ngSubmit)="onSubmitInfo(productInfoForm.value)">
+            <table class="table projects">
+              <thead>
+                <tr>
+                  <th style="width: 25%">Image</th>
+                  <th style="width: 15%">Display Order</th>
+                  <th style="width: 25%">Status</th>
+                  <th style="width: 35%">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let image of sortImage()">
+                  <td>
+                    <img style="height: 100px; width: 100px;" [src]="url+image.image" alt="" srcset="">
+                  </td>
+                  <td>{{image.displayOrder}}</td>
+                  <td>
+                    <ng-container *ngIf="image.image===mainImage">
+                      <span class="badge badge-success">Main Image</span>
+                    </ng-container>
+                    <ng-container *ngIf="image.displayOrder<=4; else statusHidden">
+                      <span class="badge badge-primary">Display</span>
+                    </ng-container>
+                    <ng-template #statusHidden>
+                      <span class="badge badge-secondary">Hidden</span>
+                    </ng-template>
+
+                  </td>
+                  <td>
+                    <a href="javascript:void(0);" class="btn btn-info btn-sm mr-1"
+                      (click)="downDisplayOrder(image.displayOrder, image.id)">
+                      <i class="fas fa-chevron-down"></i>
+                      Down
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-info btn-sm mr-1"
+                      (click)="upDisplayOrder(image.displayOrder, image.id)">
+                      <i class="fas fa-chevron-up"></i>
+                      Up
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mr-1"
+                      (click)="setMainImage(image.image)">
+                      <i class="fas fa-info"></i>
+                      Set as Main Image
+                    </a>
+                    <a class="btn btn-danger btn-sm" href="javascript:void(0);"
+                      (click)="deleteImage(image.id, image.displayOrder, image.image)">
+                      <i class="fas fa-trash"></i>
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="form-group">
+              <label>Image</label>
+              <input #file type="file" class="form-control-file" (change)="onFileSelect($event)">
+              <input type="hidden" formControlName="image" class="form-control-file">
+            </div>
+            <ng-container *ngIf="imgURL">
+              <div class="form-group">
+                <label>Preview</label><br />
+                <img [src]="imgURL" height="200" class="mr-2">
+                <button class="btn btn-warning mr-2" (click)="deletePreviewImage(); file.value=''">Delete Image</button>
+                <button class="btn btn-primary" (click)="addImage()">Add this image</button>
+              </div>
+            </ng-container>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Product Attribute</h3>
+          <div class="card-tools">
+            <button class="btn btn-tool" type="button" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <button class="btn btn-primary" (click)="openProductAttributeFormModal(null)">Add attribute</button>
+          <ng-container *ngIf="attributes">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Extra Price</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let productAttribute of sortProductAttribute()">
+                  <td>{{getAttributeName(productAttribute.attributeId)}}</td>
+                  <td>{{productAttribute.value}}</td>
+                  <td>{{productAttribute.price}}</td>
+                  <td>
+                    <ng-container *ngIf="productAttribute.status == true; else statusDisable">
+                      <span class="badge badge-primary">Available</span>
+                    </ng-container>
+                    <ng-template #statusDisable>
+                      <span class="badge badge-secondary">Disable</span>
+                    </ng-template>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0);" class="btn btn-primary btn-sm mr-1"
+                      (click)="openProductAttributeFormModal(productAttribute)">
+                      <i class="fas fa-info"></i>
+                      Edit
+                    </a>
+                    <ng-container *ngIf="productAttribute.status == false; else showButtonDisable">
+                      <a class="btn btn-success btn-sm" href="javascript:void(0);"
+                        (click)="toggleProductAttribute(productAttribute)">
+                        <i class="fas fa-check"></i>
+                        Enable
+                      </a>
+                    </ng-container>
+                    <ng-template #showButtonDisable>
+                      <a class="btn btn-danger btn-sm" href="javascript:void(0);"
+                        (click)="toggleProductAttribute(productAttribute)">
+                        <i class="fas fa-ban"></i>
+                        Disable
+                      </a>
+                    </ng-template>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-12">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Related Product</h3>
+          <div class="card-tools">
+            <button class="btn btn-tool" type="button" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>
+<!-- /.content -->

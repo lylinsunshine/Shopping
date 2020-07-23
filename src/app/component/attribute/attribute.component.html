@@ -1,0 +1,58 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Attribute</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+            <li class="breadcrumb-item active">Atribute</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">
+                        <span class="d-flex justify-content-center align-items-center">
+                        </span>
+                    </h3>
+                </div>
+            </div>
+          <div class="card-tools">
+            <a class="btn btn-primary btn-sm" href="javascript:void(0)" (click)="openAddModal()">Add</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="attributes">
+                <ng-container *ngFor="let item of attributes">
+              <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+              </tr>
+            </ng-container>
+        </ng-container>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->

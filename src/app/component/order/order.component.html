@@ -1,0 +1,180 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Order</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+                    <li class="breadcrumb-item active">Order</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Search Bar</h5>
+            <div class="card-tools">
+                <button class="btn btn-tool" type="button" (click)="showSearchBar = !showSearchBar">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <ng-container *ngIf="showSearchBar == true">
+            <div class="card-body">
+                <!-- <p>
+                Form Value: {{ productForm.value | json }}
+              </p> -->
+                <form [formGroup]="searchOrderForm" (ngSubmit)="onSubmit(searchOrderForm.value)">
+                    <div class="form-row mb-2">
+                        <div class="col-3">
+                            <label>Address</label>
+                            <input type="text" formControlName="address" class="form-control">
+                        </div>
+                        <div class="col-3">
+                            <label>Delivery Status</label>
+                            <select formControlName="deliveryStatus" class="form-control">
+                                <option value="">All</option>
+                                <option value="PENDING">PENDING</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="CANCELLED">CANCELLED</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label>Payment Method</label>
+                            <select formControlName="paymentMethod" class="form-control">
+                                <option value="">All</option>
+                                <option value="MOMO">MOMO</option>
+                                <option value="COD">COD</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label>Payment Status</label>
+                            <select formControlName="paymentStatus" class="form-control">
+                                <option value="">All</option>
+                                <option value="PENDING">PENDING</option>
+                                <option value="FAIL">FAIL</option>
+                                <option value="SUCCESS">SUCCESS</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer mt-2 d-flex justify-content-center">
+    
+                        <button type="submit" class="btn btn-lg btn-success mr-2" [disabled]="!searchOrderForm.valid"><i
+                                class="fas fa-search"></i> Search</button>
+                        <button class="btn btn-lg btn-info" (click)="resetForm()"><i class="fas fa-brush"></i> Clear all
+                            field</button>
+                    </div>
+                </form>
+            </div>
+        </ng-container>
+
+
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="card-title">
+                    <span class="d-flex justify-content-center align-items-center">
+                        <label class="mr-2">Entries</label>
+                        <select class="form-control" (change)="onChange($event.target.value)">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>20</option>
+                            <option>50</option>
+                        </select>
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <ng-container *ngIf="orders">
+                <!-- https://material.angular.io/components/table/examples -->
+                <table cdk-table [dataSource]="orders" class="table table-hover projects">
+
+                    <!-- Id Column -->
+                    <ng-container cdkColumnDef="id">
+                        <th cdk-header-cell *cdkHeaderCellDef> Id </th>
+                        <td cdk-cell *matCellDef="let order"> {{order.id}} </td>
+                    </ng-container>
+
+                    <ng-container cdkColumnDef="deliveryAddress">
+                        <th cdk-header-cell *cdkHeaderCellDef> Delivery Address </th>
+                        <td cdk-cell *matCellDef="let order">
+                            {{order.address}}</td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container cdkColumnDef="deliveryStatus">
+                        <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Delivery Status </th>
+                        <td cdk-cell *cdkCellDef="let order"> 
+                            <ng-container *ngIf="order.deliveryStatus=='COMPLETED'">
+                                <span class="badge badge-success">{{order.deliveryStatus}} </span>
+                            </ng-container>
+                            <ng-container *ngIf="order.deliveryStatus=='CANCELLED'">
+                                <span class="badge badge-danger">{{order.deliveryStatus}} </span>
+                            </ng-container>
+                            <ng-container *ngIf="order.deliveryStatus=='PENDING'">
+                                <span class="badge badge-primary">{{order.deliveryStatus}} </span>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container cdkColumnDef="paymentMethod">
+                        <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Payment Method </th>
+                        <td cdk-cell *cdkCellDef="let order"> {{order.paymentMethod}} </td>
+                    </ng-container>
+
+                    <!-- Des Column -->
+                    <ng-container cdkColumnDef="paymentStatus">
+                        <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Payment Status </th>
+                        <td cdk-cell *cdkCellDef="let order"> 
+                            <ng-container *ngIf="order.paymentStatus=='SUCCESS'">
+                            <span class="badge badge-success">{{order.paymentStatus}} </span>
+                        </ng-container>
+                        <ng-container *ngIf="order.paymentStatus=='FAIL'">
+                            <span class="badge badge-danger">{{order.paymentStatus}} </span>
+                        </ng-container>
+                        <ng-container *ngIf="order.paymentStatus=='PENDING'">
+                            <span class="badge badge-primary">{{order.paymentStatus}} </span>
+                        </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <!-- Action Column -->
+                    <ng-container cdkColumnDef="action">
+                        <th cdk-header-cell *cdkHeaderCellDef style="width: 16.6666666667%"> Action </th>
+                        <td cdk-cell *cdkCellDef="let order">
+                            <a href="javascript:void(0)" class="btn btn-info btn-sm" (click)="openViewOrderInfoModal(order.id)">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                                View
+                            </a>
+                            <!-- <a class="btn btn-danger btn-sm" href="javascript:void(0);">
+                                <i class="fas fa-trash">
+                                </i>
+                                Delete
+                            </a> -->
+                        </td>
+                    </ng-container>
+
+                    <tr cdk-header-row *cdkHeaderRowDef="columnsToDisplay"></tr>
+                    <tr cdk-row *cdkRowDef="let row; columns: columnsToDisplay;"></tr>
+                </table>
+            </ng-container>
+            <!-- <app-paginator [currentPage]="currentPage" [totalPage]="totalPage" (pageChanged)="onPageChanged($event)"></app-paginator> -->
+            <!-- {{currentPage}} -->
+            <ngb-pagination [(page)]="currentPageDisplay" [pageSize]="entries" [maxSize]="3" [rotate]="true"
+                [boundaryLinks]="true" [collectionSize]="collectionSize" (pageChange)="onPageChanged($event)">
+            </ngb-pagination>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

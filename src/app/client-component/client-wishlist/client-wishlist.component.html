@@ -1,0 +1,74 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/client/index">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="javascript:void(0)">Wishlist</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <ng-container *ngIf="wishlist==null||wishlist.length==0; else cartNotEmpty">
+                <h1 style="text-align: center;">Wishlist empty</h1>
+                <a routerLink='/client/index'>
+                    <p style="text-align: center;">Back to index <span class="lnr lnr-arrow-right"></span></p>
+                </a>
+            </ng-container>
+            <ng-template #cartNotEmpty>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of wishlist; index as index">
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <!-- <a routerLink="/client/product/{{item.productEntity.url}}"><img style="height: 130px; width: 130px;" [src]="url + item.productEntity.image" alt=""></a> -->
+                                                <ng-container *ngIf="item.productEntity.image; else noImage">
+                                                    <a routerLink="/client/product/{{item.productEntity.url}}"><img style="height: 130px; width: 130px;" [src]="url + item.productEntity.image" alt=""></a>
+                                                </ng-container>
+                                                <ng-template #noImage>
+                                                    <a routerLink="/client/product/{{item.productEntity.url}}"><img
+                                                        style="height: 130px; width: 130px;" 
+                                                            src="assets/no_image.jpg"></a>
+                                                </ng-template>
+                                            </div>
+                                            <div class="media-body">
+                                                <h3>{{item.productEntity.name}}</h3>
+                                                <br><a href="javascript:void(0);"
+                                                    (click)="deleteWishlist(item.id)"><small>Delete</small></a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+
+                                        <h5>{{item.productEntity.price | number}}</h5>
+
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->

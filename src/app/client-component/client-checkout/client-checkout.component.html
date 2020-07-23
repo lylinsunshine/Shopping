@@ -1,0 +1,170 @@
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a routerLink="/client/index">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="javascript:void(0)">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+        <div class="billing_details">
+            <ng-container *ngIf="userInfo">
+                <ng-container *ngIf="cart==null; else cartNotEmpty">
+                    <h1 style="text-align: center;">Nothing to Checkout</h1>
+                    <a routerLink='/client/index'>
+                        <p style="text-align: center;">Back to index <span class="lnr lnr-arrow-right"></span></p>
+                    </a>
+                </ng-container>
+                <ng-template #cartNotEmpty>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>Billing Details</h3>
+                            <!-- <form></form> -->
+                            <div class="row contact_form">
+                                <div class="col-md-12 form-group p_star">
+                                    <span>Name: {{userInfo.name}}</span>
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <span>Email: {{userInfo.username}}</span>
+                                </div>
+                                <ng-container *ngIf="flagNoAddress == true; else haveAddress">
+                                    <div class="col-md-12 form-group">
+                                        <span>You don't have address, </span><a routerLink="/client/profile">add it now</a>
+                                    </div>
+                                </ng-container>
+                                <ng-template #haveAddress>
+                                    <ng-container *ngIf="addressList">
+                                    <div class="col-md-12 form-group">
+                                        <div>
+                                            <span>Address: </span><br>
+                                        </div>
+                                        
+                                        <select nice-select (change)="onChange($event)" [disabled]="canSelectAddress">
+                                            <ng-container *ngFor="let item of addressList">
+                                            <option value="{{item.id}}">{{item.fullAddress}}</option>
+                                        </ng-container>
+                                        </select>
+                                    </div>
+                                </ng-container>
+                                </ng-template>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="order_box">
+                                <h2>Your Order</h2>
+                                <ul class="list">
+                                    <div class="progress-table">
+                                        <div class="table-head">
+                                            <div class="serial" style="width: 10% !important;">#</div>
+                                            <div class="percentage" style="width: 40% !important;">Name</div>
+                                            <div class="percentage" style="width: 15% !important;">Price</div>
+                                            <div class="percentage" style="width: 15% !important;">Quantity</div>
+                                            <div class="percentage" style="width: 20% !important;">Subtotal</div>
+                                        </div>
+                                        <ng-container *ngFor="let item of cart; index as index">
+                                            <div class="table-row">
+                                                <div class="serial" style="width: 10% !important;">{{index+1}}</div>
+                                                <div class="percentage" style="width: 40% !important;">
+                                                    <ng-container *ngIf="item.image; else noImage">
+                                                        <img style="height: 100px; width: 100px;" [src]="url + item.image"
+                                                        alt="">
+                                                    </ng-container>
+                                                    <ng-template #noImage>
+                                                       <img style="height: 100px; width: 100px;" 
+                                                                src="assets/no_image.jpg">
+                                                    </ng-template>
+                                                    <!-- <img style="height: 100px; width: 100px;" [src]="url + item.image"
+                                                        alt=""> -->
+                                                    <div class="ml-2">
+                                                        <h4> {{item.name}}</h4>
+                                                        <ng-container *ngIf="item.attribute.length!=0">
+                                                            <ng-container
+                                                                *ngFor="let attribute of item.attribute; last as isLast">
+                                                                <span>{{isLast ? attribute.value : attribute.value+ ' - '}}</span>
+                                                            </ng-container>
+
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                                <div class="percentage" style="width: 15% !important;">
+                                                    {{item.price | number}}</div>
+                                                <div class="percentage" style="width: 15% !important;">{{item.quantity}}
+                                                </div>
+                                                <div class="percentage" style="width: 20% !important;">
+                                                    {{item.price * item.quantity | number}}
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ul>
+                                <ul class="list list_2">
+                                    <li><a href="#">Total <span>{{totalPrice | number}}</span></a></li>
+                                </ul>
+                                <ng-container *ngIf="flagNoAddress == false">
+                                <div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option5" name="selector" checked
+                                            (change)="handleChange($event, 'COD')">
+                                        <label for="f-option5">Cash on delivery (COD)</label>
+                                        <img style="height: 40px; width: 70px;"
+                                            src="assets/client-assets/img/codLogo.png" alt="">
+                                        <div class="check"></div>
+                                    </div>
+
+                                </div>
+                                <ng-container *ngIf="paymentType == 'COD'">
+
+                                    <p>{{selectedAddress}}</p>
+                                    <a class="primary-btn" [ngClass]="canClick ? 'no-click': ''" (click)="codPayment()">
+                                        <ng-container *ngIf="isOrdering">
+                                            <div class="spinner-border spinner-border-sm" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                              </div>
+                                            </ng-container>
+                                        Order now</a>
+                                </ng-container>
+                                <div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option6" name="selector"
+                                            (change)="handleChange($event, 'MOMO')">
+                                        <label for="f-option6">MoMo</label>
+                                        <img style="height: 45px;" src="assets/client-assets/img/momoLogo.png" alt="">
+                                        <div class="check"></div>
+                                    </div>
+
+                                </div>
+                                <ng-container *ngIf="paymentType == 'MOMO'">
+
+                                    <div class="creat_account">
+                                        <p>{{selectedAddress}}</p>
+                                    </div>
+                                    <a class="primary-btn" [ngClass]="canClick ? 'no-click': ''" (click)="momoPayment()">
+                                        <ng-container *ngIf="isOrdering">
+                                        <div class="spinner-border spinner-border-sm" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                          </div>
+                                        </ng-container>
+                                        {{isMomoFail ? 'Momo error, payment fail, redirecting...': 'Proceed to MoMo'}}
+                                        </a>
+                                </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
+</section>
+<!--================End Checkout Area =================-->

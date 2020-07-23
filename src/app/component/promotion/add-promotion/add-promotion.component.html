@@ -1,0 +1,219 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Add Promotion</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+                    <li class="breadcrumb-item active"><a routerLink='/admin/promotions'
+                            routerLinkActive="active">Promotion</a>
+                    </li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Fill in</h3>
+        </div>
+        <!-- Form Value: {{ productForm.value | json }} -->
+        <form [formGroup]="promotionForm" (ngSubmit)="onSubmit()">
+            <div class="card-body">
+                <div class="callout callout-danger">
+                    <h5>Be Careful!</h5>
+                    <p>You can't change promotion infomation, please confirm all fields before submit. </p>
+                </div>
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" formControlName="name" required class="form-control">
+                    <ng-container
+                        *ngIf="promotionForm.controls.name.invalid && (promotionForm.controls.name.dirty || promotionForm.controls.name.touched)">
+                        <small class="text-danger" *ngIf="promotionForm.controls.name.errors.required">
+                            Name required
+                        </small>
+                    </ng-container>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" required formControlName="startDate"
+                                    ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()"
+                                    (dateSelect)="onStartDateSelect($event)" />
+
+                            </div>
+                            <ng-container
+                                *ngIf="promotionForm.controls.startDate.invalid && (promotionForm.controls.startDate.dirty || promotionForm.controls.startDate.touched)">
+                                <small class="text-danger" *ngIf="promotionForm.controls.startDate.errors.required">
+                                    Start date required
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="promotionForm.controls.startDate.errors?.dateValidator">
+                                    Date must be greater than current date
+                                </small>
+                                <small class="text-danger"
+                                *ngIf="promotionForm.controls.startDate.errors?.startDateValidator">
+                                Date must be greater than lastest promotion end date
+                            </small>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" required formControlName="endDate" ngbDatepicker
+                                    #d2="ngbDatepicker" (click)="d2.toggle()" (dateSelect)="onEndDateSelect($event)" />
+                            </div>
+                            <ng-container
+                                *ngIf="promotionForm.controls.endDate.invalid && (promotionForm.controls.endDate.dirty || promotionForm.controls.endDate.touched)">
+                                <small class="text-danger" *ngIf="promotionForm.controls.endDate.errors.required">
+                                    End date required
+                                </small>
+                                <small class="text-danger"
+                                    *ngIf="promotionForm.controls.endDate.errors?.dateValidator">
+                                    Date must be greater than current date
+                                </small>
+                                <small class="text-danger"
+                                *ngIf="promotionForm.controls.endDate.errors?.endDateValidator">
+                                Date must be greater than start date
+                            </small>
+                            </ng-container>
+                            <ng-container *ngIf="promotionForm.errors?.invalidEndDate && (promotionForm.touched || promotionForm.dirty)">
+                                <small class="text-danger">
+                                  End date must be greater than start date
+                                </small>
+                              </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Discount type *</label>
+                    <div class="form-check">
+                        <input name="radio1" class="form-check-input" type="radio" value="PERCENT" checked
+                            (click)="onDiscountTypeChange($event)">
+                        <label class="form-check-label">Percent</label>
+                        <ng-container *ngIf="isPercent">
+                            <div class="form-group">
+                                <input type="text" formControlName="discountPercent" class="form-control w-25"
+                                    placeholder="Type 1 - 100">
+                                <ng-container
+                                    *ngIf="promotionForm.controls.discountPercent.invalid && (promotionForm.controls.discountPercent.dirty || promotionForm.controls.discountPercent.touched)">
+                                    <small class="text-danger"
+                                        *ngIf="promotionForm.controls.discountPercent.errors.required">
+                                        Percent required
+                                    </small>
+                                    <small class="text-danger"
+                                        *ngIf="promotionForm.controls.discountPercent.errors.pattern">
+                                        Percent must be number and 1-100
+                                    </small>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="form-check">
+                        <input name="radio1" class="form-check-input" type="radio" value="NUMBER"
+                            (click)="onDiscountTypeChange($event)">
+                        <label class="form-check-label">Number</label>
+                        <ng-container *ngIf="!isPercent">
+                            <div class="form-group">
+                                <input type="text" formControlName="discountNumber" class="form-control w-25"
+                                    placeholder="Type number">
+                                <ng-container
+                                    *ngIf="promotionForm.controls.discountNumber.invalid && (promotionForm.controls.discountNumber.dirty || promotionForm.controls.discountNumber.touched)">
+                                    <small class="text-danger"
+                                        *ngIf="promotionForm.controls.discountNumber.errors.required">
+                                        Number required
+                                    </small>
+                                    <small class="text-danger"
+                                        *ngIf="promotionForm.controls.discountNumber.errors.pattern">
+                                        Number must be number greater than 0
+                                    </small>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Apply type *</label>
+                    <div class="form-check">
+                        <input name="radio2" class="form-check-input" type="radio" value="CATEGORY" checked
+                            (click)="onApplyTypeChange($event)">
+                        <label class="form-check-label">Apply for selected category</label>
+                        <ng-container *ngIf="applyType == 'CATEGORY'">
+                            <div class="form-group">
+                                <select class="form-control" (change)="selectCategory($event)">
+                                    <option value="" hidden>Select category</option>
+                                    <option *ngFor="let category of categories" value={{category.id}}>
+                                        {{category.name}}
+                                      </option>
+                                  </select>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="form-check">
+                        <input name="radio2" class="form-check-input" type="radio" value="MANUFACTURER"
+                            (click)="onApplyTypeChange($event)">
+                        <label class="form-check-label">Apply for selected manufacturer</label>
+                        <ng-container *ngIf="applyType == 'MANUFACTURER'">
+                            <div class="form-group">
+                                <select class="form-control" (change)="selectManufacturer($event)">
+                                    <option value="" hidden>Select manufacturer</option>
+                                    <option *ngFor="let manufacturer of manufacturers" value={{manufacturer.id}}>
+                                        {{manufacturer.name}}
+                                      </option>
+                                  </select>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <!-- <div class="form-check">
+                        <input name="radio2" class="form-check-input" type="radio" value="SELECTED_PRODUCT"
+                            (click)="onApplyTypeChange($event)">
+                        <label class="form-check-label">Apply for selected product</label>
+                        <ng-container *ngIf="applyType == 'SELECTED_PRODUCT'">
+                            <div class="form-group">
+                                <select formControlName="id" required class="form-control">
+                                    <option value="" hidden>Select manufacturer</option>
+                                  </select>
+                            </div>
+                        </ng-container>
+                    </div> -->
+                </div>
+                <!-- <div class="form-group">
+                    <label>Image</label>
+                    <input #file type="file" (change)="onFileSelect($event)" class="form-control-file">
+                </div>
+                <ng-container *ngIf="imgURL">
+                    <div class="form-group">
+                        <label>Preview</label><br />
+                        <img [src]="imgURL" height="200">
+                        <button class="btn btn-warning" (click)="deleteImage(); file.value=''">Delete Image</button>
+                    </div>
+                </ng-container> -->
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary float-right" [disabled]="!promotionForm.valid">Add</button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- /.content -->

@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <h4 class="modal-title">Product Attribute</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="callout callout-danger" *ngIf="productAttribute==null">
+        <h5>Be Careful!</h5>
+        <p>There action cannot be undone, please check info carefully</p>
+      </div>
+    <form [formGroup]="productAttributeForm" (ngSubmit)="onSubmit(productAttributeForm.value)">
+        <div class="form-group" formGroupName="attributeEntity">
+            <label>Attribute *</label>
+            <select class="form-control" formControlName="id" [attr.disabled]="productAttribute!=null ? true: null">
+                <option *ngFor="let attribute of attributes" value={{attribute.id}}>{{attribute.name}}
+                </option>
+            </select>
+            <!-- <a *ngIf="productAttribute==null">Necessary attribute not found? Add it before</a> -->
+        </div>
+        <div class="form-group">
+            <label>Value *</label>
+            <input type="text" formControlName="value" required class="form-control"
+                [attr.disabled]="productAttribute!=null ? true: null">
+            <ng-container
+                *ngIf="productAttributeForm.controls.value.invalid && (productAttributeForm.controls.value.dirty || productAttributeForm.controls.value.touched)">
+                <small class="text-danger" *ngIf="productAttributeForm.controls.value.errors.required">
+                    Value required
+                </small>
+            </ng-container>
+            <ng-container
+                *ngIf="(productAttributeForm.controls.value.dirty || productAttributeForm.controls.value.touched)">
+                <ng-container *ngIf="productAttributeForm.controls.value.status === 'PENDING'">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                        <small class="sr-only">Loading...</small>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="productAttributeForm.controls.value.errors?.valueExist">
+                    <small class="text-danger">Value Exist</small>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="form-group">
+            <label>Extra Price *</label>
+            <input type="text" formControlName="price" required class="form-control">
+            <ng-container
+                *ngIf="productAttributeForm.controls.price.invalid && (productAttributeForm.controls.price.dirty || productAttributeForm.controls.price.touched)">
+                <small class="text-danger" *ngIf="productAttributeForm.controls.price.errors.required">
+                    Price required
+                </small>
+                <small class="text-danger" *ngIf="productAttributeForm.controls.price.errors.pattern">
+                    Check number
+                </small>
+            </ng-container>
+        </div>
+        <!-- <button type="submit" class="btn btn-primary float-right" [disabled]="!productAttributeForm.valid">Update
+                Info</button> -->
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!productAttributeForm.valid"
+        (click)="closeModal()">{{productAttribute!=null ? 'Update Info' : 'Add attribute'}}</button>
+</div>

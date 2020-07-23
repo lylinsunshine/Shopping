@@ -1,0 +1,350 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Index</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a routerLink='/admin/index' routerLinkActive="active">Home</a></li>
+                    <li class="breadcrumb-item active">Index</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <ng-container *ngIf="stat">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{stat.order}}</h3>
+
+                            <p>Order in month</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{stat.product}}</h3>
+
+                            <p>Product</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fab fa-product-hunt"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{stat.user}}</h3>
+
+                            <p>User Registrations</p>
+                        </div>
+                        <div class="icon">
+                            <i class="far fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{stat.category}}</h3>
+
+                            <p>Category</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-list"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+        </ng-container>
+        <!-- /.row -->
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-6 col-6">
+                <!-- small box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Profit in 6 month
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="lineChartData">
+                            <canvas baseChart [datasets]="lineChartData" [labels]="barChartLabels"
+                                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                                [chartType]="lineChartType"></canvas>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-6 col-6">
+                <!-- small box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Number of product
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="pieChartData">
+                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels1"
+                                [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors1"
+                                [legend]="pieChartLegend">
+                            </canvas>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-6 col-6">
+                <!-- small box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Order Type
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="orderTypeData">
+                            <canvas baseChart [data]="orderTypeData" [labels]="orderTypeLabels"
+                                [chartType]="pieChartType" [options]="pieChartOptions" [colors]="pieChartColors"
+                                [legend]="pieChartLegend">
+                            </canvas>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-6 col-6">
+                <!-- small box -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            Total order in month
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="barChartDataOrderPerMonth">
+                            <canvas baseChart [datasets]="barChartDataOrderPerMonth" [labels]="barChartLabels"
+                                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+                            </canvas>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Hot product</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ng-container *ngIf="hotProducts.length!=0">
+                            <table class="table projects">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of hotProducts; index as index">
+                                  <tr>
+                                    <td>{{index + 1}}</td>
+                                    <td>                                      
+                                        <ng-container *ngIf="item.image!=null&&item.image!=''; else noImage1">
+                                        <img class="mr-2" style="height: 50px; width: 50px;" [src]="url+item.image">
+                                    </ng-container>
+                                    <ng-template #noImage1>
+                                        <img class="mr-2" style="height: 50px; width: 50px;" src="assets/no_image.jpg">
+                                    </ng-template>
+                                        {{item.name}}</td>
+                                    <td>{{item.price}}</td>
+                                    <td>
+                                        <a routerLink="/admin/products/edit/{{item.id}}">View</a>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                                </tbody>
+                              </table>
+                            </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lastest promotion</h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="promotion">
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-md">
+                              Name
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                              <span class="text-muted">{{promotion.name}}</span>
+                            </p>
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-md">
+                              Start date
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                              <span class="text-muted">{{promotion.startDate}}</span>
+                            </p>
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-md">
+                              End date
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                              <span class="text-muted">{{promotion.endDate}}</span>
+                            </p>
+                          </div>
+                          <ng-container *ngIf="promotion.discountNumber!='' && promotion.discountNumber!=null">
+                          <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-md">
+                              Discount price
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                              <span class="text-muted">{{promotion.discountNumber}}d</span>
+                            </p>
+                          </div>
+                        </ng-container>
+                        <ng-container *ngIf="promotion.discountPercent!='' && promotion.discountPercent!=null">
+                            <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                              <p class="text-success text-md">
+                                Discount percent
+                              </p>
+                              <p class="d-flex flex-column text-right">
+                                <span class="text-muted">{{promotion.discountPercent}}%</span>
+                              </p>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                            <p class="text-success text-md">
+                              View more
+                            </p>
+                            <p class="d-flex flex-column text-right">
+                              <a routerLink="/admin/promotions">Click here</a>
+                            </p>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feature product</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            <ng-container *ngIf="featureProducts">
+                                <ng-container *ngFor="let item of featureProducts">
+                            <li class="item">
+                              <div class="product-img">
+                                <ng-container *ngIf="item.image!=null&&item.image!=''; else noImage">
+                                    <img class="img-size-50" [src]="url+item.image">
+                                </ng-container>
+                                <ng-template #noImage>
+                                    <img class="img-size-50" src="assets/no_image.jpg">
+                                </ng-template>
+                              </div>
+                              <div class="product-info">
+                                <a class="product-title" href="javascript:void(0)">{{item.name}}
+                                  <span class="badge badge-success float-right">{{item.price}}</span></a>
+                              </div>
+                            </li>
+                            <!-- /.item -->
+                        </ng-container>
+                        </ng-container>
+                          </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lastest product</h3>
+                    </div>
+                    <div class="card-body">
+                        <ng-container *ngIf="lastestProduct.length!=0">
+                        <table class="table projects">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let item of lastestProduct; index as index">
+                              <tr>
+                                <td>{{index + 1}}</td>
+                                <td>
+                                    
+                                    <ng-container *ngIf="item.image!=null&&item.image!=''; else noImage">
+                                    <img class="mr-2" style="height: 50px; width: 50px;" [src]="url+item.image">
+                                </ng-container>
+                                <ng-template #noImage>
+                                    <img class="mr-2" style="height: 50px; width: 50px;" src="assets/no_image.jpg">
+                                </ng-template>
+                                    {{item.name}}</td>
+                                <td>{{item.price}}</td>
+                                <td>
+                                    <a routerLink="/admin/products/edit/{{item.id}}">View</a>
+                                </td>
+                              </tr>
+                            </ng-container>
+                            </tbody>
+                          </table>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

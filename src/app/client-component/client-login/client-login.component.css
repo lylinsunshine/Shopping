@@ -1,0 +1,15 @@
+.disabled-btn {
+    display: block;
+    border-radius: 0px;
+    line-height: 38px;
+    width: 100%;
+    text-transform: uppercase;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color: #000;
+    padding: 0 30px;
+    font-weight: 500;
+    transition: all 0.3s ease 0s;
+    background-color: -internal-light-dark(rgb(239, 239, 239), rgb(74, 74, 74));
+}
